@@ -43,7 +43,7 @@
 
 ;; Messages are conveyed on core.async channels.
 
-(require '[clojure.core.async :refer [go chan <! >! put! alts!! timeout]])
+(require '[clojure.core.async :refer [go chan map> <! >! put! alts!! timeout]])
 
 ;; Channels which convey infrom messages are called inform channels
 ;; and channels which convey transform messages are called transform
@@ -68,7 +68,11 @@
 ;; put the generated transform messages on a transform channel. That
 ;; is the purpose of the `io.pedestal.app.map` namespace.
 
-(require '[io.pedestal.app.map :as map])
+(require '[io.pedestal.app.map :as map]
+         '[io.pedestal.app.match :as match])
+
+;; TODO: consider whether to show a "by-hand" dispatch function, then
+;;       motivate the use of match/index in a separate step.
 
 ;; First we need to create a configuration that will describe how to
 ;; dispatch inform messages to functions. The following configuration
@@ -83,32 +87,31 @@
 ;; can be used to match any event. :* matches exactly one element and
 ;; :** matches 0 or more elements.
 
-;; Now we will create a map that has an input inform channel and an
-;; output transform channel and uses the above config.
+;; Now we can test inform to transform, which is a pure function:
+(map/inform-to-transforms (match/index input-config)
+                          [[[:ui :button :a] :click]])
 
-;; Create the transform channel
-
+;; Next, we can wire inform (input) and transform (output) channels:
 (def transform-chan (chan 10))
-
-;; Create the map passing the config and transform channel and
-;; returning the inform channel.
-
-(def inform-chan (map/inform->transforms input-config transform-chan))
+(def inform-chan (map> (partial map/inform-to-transforms (match/index input-config))
+                       transform-chan))
 
 ;; We can now send an inform message on the inform channel
-
 (put! inform-chan [[[:ui :button :a] :click]])
 
 ;; and see the transform message come out of the transform channel.
-
 (println (first (alts!! [transform-chan (timeout 100)])))
 
 ;; So we now have a transform message which can be used to increment
 ;; a value in the information model.
 
+;; TODO: continue demo as shown above, dropping the unnecessary
+;;       channel-wiring fns (e.g. inform->transforms) in favor
+;;       of core.async map> et al.
+
+
 ;; To work with the information model we use the
 ;; `io.pedestal.app.model` namespace.
-
 (require '[io.pedestal.app.model :as model])
 
 ;; A transform channel sends messages to the model and an inform
