@@ -42,7 +42,7 @@ release_version = version_number!(project_cljs, Common::WITHOUT_SNAPSHOT_DEFPROJ
 release_version =~ /(\d+\.\d+\.)(\d+)/
 bumped_subminor = (($2.to_i)+1).to_s
 pre_release_version = "#{$1}#{bumped_subminor}-SNAPSHOT"
-release_defproject_re = /\(defproject (vitalreactor.pedestal\/.+|pedestal-.*\/lein-template) "#{release_version}"/
+release_defproject_re = /\(defproject (io.pedestal\/.+|pedestal-.*\/lein-template) "#{release_version}"/
 
 # Confirm the release operation
 

@@ -10,7 +10,7 @@
 ;
 ; You must not remove this notice, or any other, from this software.
 
-(defproject vitalreactor.pedestal/pedestal.service "0.3.0"
+(defproject io.pedestal/pedestal.service "0.3.0-SNAPSHOT"
   :description "Pedestal Service"
   :dependencies [[org.clojure/clojure "1.6.0"]
                  ;; logging
