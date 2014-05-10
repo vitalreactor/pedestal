@@ -1,6 +1,6 @@
 module Common
-  WITHOUT_SNAPSHOT_DEFPROJECT_RE = /\(defproject (io.pedestal\/.+|pedestal-.*\/lein-template) "(\d+\.\d+\.\d+)-SNAPSHOT"/
-  WITH_SNAPSHOT_DEFPROJECT_RE = /\(defproject (io.pedestal\/.+|pedestal-.*\/lein-template) "(\d+\.\d+\.\d+-SNAPSHOT)"/
+  WITHOUT_SNAPSHOT_DEFPROJECT_RE = /\(defproject (vitalreactor.pedestal\/.+|pedestal-.*\/lein-template) "(\d+\.\d+\.\d+)-SNAPSHOT"/
+  WITH_SNAPSHOT_DEFPROJECT_RE = /\(defproject (vitalreactor.pedestal\/.+|pedestal-.*\/lein-template) "(\d+\.\d+\.\d+-SNAPSHOT)"/
 
   def check_git_version!
     version_report = `git --version`
@@ -87,8 +87,8 @@ module Common
       contents = File.read project_clj
       File.open(project_clj,"w") do |file|
         redefined = contents.gsub(defproject_re, '(defproject \1 "'+ new_version + '"')
-        redepended = redefined.gsub(/\[io.pedestal\/(.+) "#{prev_version}"/,
-                                    '[io.pedestal/\1 "'+new_version+'"')
+        redepended = redefined.gsub(/\[vitalreactor.pedestal\/(.+) "#{prev_version}"/,
+                                    '[vitalreactor.pedestal/\1 "'+new_version+'"')
         file.puts redepended
       end
     end

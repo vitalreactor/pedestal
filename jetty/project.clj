@@ -10,7 +10,7 @@
 ;
 ; You must not remove this notice, or any other, from this software.
 
-(defproject io.pedestal/pedestal.jetty "0.3.0-SNAPSHOT"
+(defproject vitalreactor.pedestal/pedestal.jetty "0.3.0"
   :description "Embedded Jetty adapter for Pedestal HTTP Service"
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [org.eclipse.jetty/jetty-server "9.1.3.v20140225"]
